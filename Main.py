@@ -141,23 +141,22 @@ def process_packing_directory():
                                 sumofallboxes = 0
                                 for page_num in range(len(doc)):
                                     page = doc[page_num]
-                                    start_y = 333.6
-                                    line_height = 11.5
-                                    item_code_start_x = 390+20
-                                    item_code_end_x = 480
-                                    quantity_start_x = 480
-                                    quantity_end_x = 570-20
+                                    start_y = 335
+                                    line_height = 11.5058823529
+                                    item_code_start_x = 473.5
+                                    item_code_end_x = 525.6
+                                    quantity_start_x = 527
+                                    quantity_end_x = 574
                                     current_y = start_y
-                                    midstart = 478.8
-                                    midend = 483.1
+                                    midstart = 525.6
+                                    midend = 527
                                     while current_y + line_height <= 700:
                                         rect_item_code = fitz.Rect(item_code_start_x, current_y, item_code_end_x, current_y + line_height)
                                         rect_quantity = fitz.Rect(quantity_start_x, current_y, quantity_end_x, current_y + line_height)
                                         item_code_text = page.get_text("text", clip=rect_item_code).strip()
                                         quantity_text = page.get_text("text", clip=rect_quantity).strip()
-                                        rect_item_code1 = fitz.Rect(item_code_start_x, current_y+2, item_code_end_x, current_y + line_height)
-                                        rect_quantity1 = fitz.Rect(quantity_start_x, current_y+2, quantity_end_x, current_y + line_height)
-                                        midlane = fitz.Rect(midstart, current_y+1, midend, current_y + line_height-1)
+
+                                        midlane = fitz.Rect(midstart, current_y, midend, current_y + line_height)
                                         if item_code_text and quantity_text:
                                             try:
                                                 item_code = int(item_code_text)
@@ -165,38 +164,38 @@ def process_packing_directory():
                                                 division_result = item_code / quantity if quantity != 0 else 0
                                                 sumofallboxes = sumofallboxes + division_result
                                                 if flipcolor == 1:
-                                                    page.draw_rect(rect_item_code1, color=(1, 1, 1), fill=(1, 1, 1))
-                                                    page.draw_rect(rect_quantity1, color=(1, 1, 1), fill=(1, 1, 1))
+                                                    page.draw_rect(rect_item_code, color=(1, 1, 1), fill=(1, 1, 1))
+                                                    page.draw_rect(rect_quantity, color=(1, 1, 1), fill=(1, 1, 1))
                                                     page.draw_rect(midlane, color=(1, 1, 1), fill=(1, 1, 1))
                                                     flipcolor = 0
                                                 else:
-                                                    page.draw_rect(rect_item_code1, color=gray, fill=gray)
-                                                    page.draw_rect(rect_quantity1, color=gray, fill=gray)
+                                                    page.draw_rect(rect_item_code, color=gray, fill=gray)
+                                                    page.draw_rect(rect_quantity, color=gray, fill=gray)
                                                     page.draw_rect(midlane, color=gray, fill=gray)
 
                                                     flipcolor = 1
-                                                page.insert_text((rect_item_code1.x0+10, rect_item_code1.y0+8), str(int(division_result)), color=(0, 0, 0), fontsize=10)
+                                                page.insert_text((rect_item_code.x0+10, rect_item_code.y0+8), str(int(division_result)), color=(0, 0, 0), fontsize=10)
                                             except ValueError:
                                                 pass
                                         elif item_code_text:
                                             if flipcolor == 1:
-                                                    page.draw_rect(rect_item_code1, color=(1, 1, 1), fill=(1, 1, 1))
-                                                    page.draw_rect(rect_quantity1, color=(1, 1, 1), fill=(1, 1, 1))
+                                                    page.draw_rect(rect_item_code, color=(1, 1, 1), fill=(1, 1, 1))
+                                                    page.draw_rect(rect_quantity, color=(1, 1, 1), fill=(1, 1, 1))
                                                     page.draw_rect(midlane, color=(1, 1, 1), fill=(1, 1, 1))
 
                                             else:
-                                                    page.draw_rect(rect_item_code1, color=gray, fill=gray)
-                                                    page.draw_rect(rect_quantity1, color=gray, fill=gray)
+                                                    page.draw_rect(rect_item_code, color=gray, fill=gray)
+                                                    page.draw_rect(rect_quantity, color=gray, fill=gray)
                                                     page.draw_rect(midlane, color=gray, fill=gray)
                                         else:
-                                            if flipcolor == 1:
-                                                    page.draw_rect(fitz.Rect(quantity_start_x-50, current_y-5, quantity_end_x, current_y + line_height-1), color=gray, fill=gray)
+                                            if flipcolor == 0:
+                                                    page.draw_rect(midlane, color=(1, 1, 1), fill=(1, 1, 1))
                                             else:
-                                                    page.draw_rect(fitz.Rect(quantity_start_x-50, current_y-5, quantity_end_x, current_y + line_height-1), color=(1, 1, 1), fill=(1, 1, 1))
+                                                    page.draw_rect(midlane, color=gray, fill=gray)
                                         current_y += line_height
-                                    rect = fitz.Rect(390+3, 311+2, 570-3, 334-2)
+                                    rect = fitz.Rect(473+0.5, 311+0.5, 575.5-0.5, 332.4-0.5)
                                     color = (230 / 255, 230 / 255, 230 / 255)
-                                    page.draw_rect(rect, color=color, fill=color)
+                                    page.draw_rect(rect, color=color, fill=color,)
                                     text = "Boxes"
                                     page.insert_textbox(rect, text, fontsize=11, align=1)
                                     rect123 = fitz.Rect(280, 751, 370, 770)
