@@ -157,6 +157,8 @@ def process_packing_directory():
                                         quantity_text = page.get_text("text", clip=rect_quantity).strip()
 
                                         midlane = fitz.Rect(midstart, current_y, midend, current_y + line_height)
+                                        item_code_text = item_code_text.replace(",", "")
+
                                         if item_code_text and quantity_text:
                                             try:
                                                 item_code = int(item_code_text)
